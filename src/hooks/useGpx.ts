@@ -4,13 +4,17 @@ import type { GpxPoint } from "../types/gpx";
 
 const SIMPLIFICATION_TOLERANCE = 0.0005;
 
-export function useGpx(file: string) {
+export function useGpx(file: File | null) {
   const [points, setPoints] = useState<GpxPoint[]>([]);
 
   useEffect(() => {
+    if (!file) {
+      setPoints([]);
+      return;
+    }
+
     async function load() {
-      const response = await fetch(file);
-      const text = await response.text();
+      const text = await file.text();
 
       const parsed = parseGpx(text);
 

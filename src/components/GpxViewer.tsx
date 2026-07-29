@@ -3,7 +3,7 @@ import { projectPoints } from "../utils/gpx";
 import { useGpx } from "../hooks/useGpx";
 
 interface Props {
-  file: string;
+  file: File;
 }
 
 const ANIMATION_DURATION = 4000;

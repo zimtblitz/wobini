@@ -1,10 +1,22 @@
+import { useState } from "react";
 import GpxViewer from "./components/GpxViewer";
+import GpxFilePicker from "./components/GpxFilePicker";
 
 function App() {
+  const [file, setFile] = useState<File | null>(null);
+
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <GpxViewer file="/src/assets/route.gpx" />
-    </div>
+    <>
+      {!file && (
+        <GpxFilePicker
+          onFileSelected={setFile}
+        />
+      )}
+
+      {file && (
+        <GpxViewer file={file} />
+      )}
+    </>
   );
 }
 
