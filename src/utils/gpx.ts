@@ -53,7 +53,7 @@ function perpendicularDistance(
 
 export function simplifyPoints(
   points: GpxPoint[],
-  tolerance = 0.00001
+  tolerance = 0.0005
 ): GpxPoint[] {
   if (points.length <= 2) {
     return points;
@@ -100,15 +100,15 @@ export function simplifyPoints(
 
 export function projectPoints(
   points: GpxPoint[],
-  size = 1000,
-  padding = 50
+  size = 1000
 ): SvgPoint[] {
   if (points.length === 0) {
     return [];
   }
 
   const meanLat =
-    points.reduce((sum, p) => sum + p.lat, 0) / points.length;
+    points.reduce((sum, p) => sum + p.lat, 0) /
+    points.length;
 
   const latCorrection = Math.cos(
     (meanLat * Math.PI) / 180
@@ -123,27 +123,18 @@ export function projectPoints(
   const ys = projected.map((p) => p.y);
 
   const minX = Math.min(...xs);
-  const maxX = Math.max(...xs);
-
   const minY = Math.min(...ys);
+
+  const maxX = Math.max(...xs);
   const maxY = Math.max(...ys);
 
   const width = maxX - minX;
   const height = maxY - minY;
 
-  const scale = Math.min(
-    (size - padding * 2) / width,
-    (size - padding * 2) / height
-  );
-
-  const routeWidth = width * scale;
-  const routeHeight = height * scale;
-
-  const offsetX = (size - routeWidth) / 2;
-  const offsetY = (size - routeHeight) / 2;
+  const scale = size / Math.max(width, height);
 
   return projected.map((point) => ({
-    x: offsetX + (point.x - minX) * scale,
-    y: size - offsetY - (point.y - minY) * scale,
+    x: (point.x - minX) * scale,
+    y: (maxY - point.y) * scale,
   }));
 }
