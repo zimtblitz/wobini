@@ -1,6 +1,10 @@
+import GpxViewer from "./components/GpxViewer";
+
 function App() {
   return (
-    <h1>Hello wobini</h1>
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <GpxViewer file="/src/assets/route.gpx" />
+    </div>
   );
 }
 
