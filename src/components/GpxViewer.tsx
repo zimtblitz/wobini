@@ -1,6 +1,10 @@
+import { useMemo } from "react";
 import { useSvgAnimation } from "../hooks/useSvgAnimation";
+import { useCurrentPosition } from "../hooks/useCurrentPosition";
 import { projectPoints } from "../utils/gpx";
+import { projectGpsToRoute } from "../utils/routeProjection";
 import { useGpx } from "../hooks/useGpx";
+import RoutePosition from "./RoutePosition";
 
 interface Props {
   file: File;
@@ -17,11 +21,45 @@ function GpxViewer({ file }: Props) {
     animationStyle,
   } = useSvgAnimation(ANIMATION_DURATION);
 
+  const gpsPosition = useCurrentPosition();
+
+  const svgPoints = useMemo(
+    () =>
+      points.length > 0
+        ? projectPoints(points)
+        : [],
+    [points]
+  );
+
+  const routePosition = useMemo(
+    () => {
+      if (
+        !gpsPosition ||
+        points.length === 0 ||
+        svgPoints.length === 0
+      ) {
+        return null;
+      }
+
+      return projectGpsToRoute(
+        {
+          lat: gpsPosition.latitude,
+          lon: gpsPosition.longitude,
+        },
+        points,
+        svgPoints
+      );
+    },
+    [
+      gpsPosition,
+      points,
+      svgPoints,
+    ]
+  );
+
   if (points.length === 0) {
     return <div>Lade Route...</div>;
   }
-
-  const svgPoints = projectPoints(points);
 
   const xs = svgPoints.map((p) => p.x);
   const ys = svgPoints.map((p) => p.y);
@@ -68,6 +106,9 @@ function GpxViewer({ file }: Props) {
         style={animationStyle}
       />
 
+      {/* Aktuelle GPS Position */}
+      <RoutePosition position={routePosition} />
+
       {/* Startpunkt */}
       <circle
         cx={start.x}
@@ -77,7 +118,7 @@ function GpxViewer({ file }: Props) {
         vectorEffect="non-scaling-stroke"
       />
 
-      {/* Endpunkt */}
+      {/* Zielpunkt */}
       <circle
         cx={end.x}
         cy={end.y}
