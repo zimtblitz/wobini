@@ -1,12 +1,4 @@
-export interface GpxPoint {
-  lat: number;
-  lon: number;
-}
-
-export interface SvgPoint {
-  x: number;
-  y: number;
-}
+import type { GpxPoint, SvgPoint } from "../types/gpx";
 
 export function parseGpx(text: string): GpxPoint[] {
   const parser = new DOMParser();

@@ -1,52 +1,21 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  parseGpx,
-  projectPoints,
-  simplifyPoints,
-} from "../utils/gpx";
-import type { GpxPoint } from "../utils/gpx";
+import { useSvgAnimation } from "../hooks/useSvgAnimation";
+import { projectPoints } from "../utils/gpx";
+import { useGpx } from "../hooks/useGpx";
 
 interface Props {
   file: string;
 }
 
-const SIMPLIFICATION_TOLERANCE = 0.0005;
 const ANIMATION_DURATION = 4000;
 
 function GpxViewer({ file }: Props) {
-  const [points, setPoints] = useState<GpxPoint[]>([]);
-  const [lineLength, setLineLength] = useState(0);
-  const [dashOffset, setDashOffset] = useState(0);
-  const [animate, setAnimate] = useState(false);
+  const points = useGpx(file);
 
-  const polylineRef = useRef<SVGPolylineElement | null>(null);
-
-  useEffect(() => {
-    async function load() {
-      const response = await fetch(file);
-      const text = await response.text();
-
-      const gpxPoints = parseGpx(text);
-
-      const simplified = simplifyPoints(
-        gpxPoints,
-        SIMPLIFICATION_TOLERANCE
-      );
-
-      setPoints(simplified);
-    }
-
-    load();
-  }, [file]);
-
-  useEffect(() => {
-    if (polylineRef.current) {
-      const length = polylineRef.current.getTotalLength();
-
-      setLineLength(length);
-      setDashOffset(0);
-    }
-  }, [points]);
+  const {
+    polylineRef,
+    startAnimation,
+    animationStyle,
+  } = useSvgAnimation(ANIMATION_DURATION);
 
   if (points.length === 0) {
     return <div>Lade Route...</div>;
@@ -66,27 +35,13 @@ function GpxViewer({ file }: Props) {
 
   const viewBoxX = minX - padding;
   const viewBoxY = minY - padding;
-  const viewBoxWidth = maxX - minX + padding * 2;
-  const viewBoxHeight = maxY - minY + padding * 2;
+  const viewBoxWidth =
+    maxX - minX + padding * 2;
+  const viewBoxHeight =
+    maxY - minY + padding * 2;
 
   const start = svgPoints[0];
   const end = svgPoints[svgPoints.length - 1];
-
-  const startAnimation = () => {
-    if (lineLength === 0) {
-      return;
-    }
-
-    // Linie verstecken
-    setAnimate(false);
-    setDashOffset(lineLength);
-
-    // Zeichnen starten
-    requestAnimationFrame(() => {
-      setAnimate(true);
-      setDashOffset(0);
-    });
-  };
 
   const routePoints = svgPoints
     .map((p) => `${p.x},${p.y}`)
@@ -110,13 +65,7 @@ function GpxViewer({ file }: Props) {
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
-        style={{
-          strokeDasharray: lineLength,
-          strokeDashoffset: dashOffset,
-          transition: animate
-            ? `stroke-dashoffset ${ANIMATION_DURATION}ms ease-in-out`
-            : "none",
-        }}
+        style={animationStyle}
       />
 
       {/* Startpunkt */}
