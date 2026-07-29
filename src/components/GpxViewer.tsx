@@ -11,7 +11,7 @@ interface Props {
 }
 
 const SIMPLIFICATION_TOLERANCE = 0.0005;
-const ANIMATION_DURATION = 2500;
+const ANIMATION_DURATION = 4000;
 
 function GpxViewer({ file }: Props) {
   const [points, setPoints] = useState<GpxPoint[]>([]);
@@ -114,7 +114,7 @@ function GpxViewer({ file }: Props) {
           strokeDasharray: lineLength,
           strokeDashoffset: dashOffset,
           transition: animate
-            ? `stroke-dashoffset ${ANIMATION_DURATION}ms ease-out`
+            ? `stroke-dashoffset ${ANIMATION_DURATION}ms ease-in-out`
             : "none",
         }}
       />
