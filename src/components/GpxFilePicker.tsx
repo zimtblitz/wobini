@@ -35,26 +35,23 @@ function GpxFilePicker({ onFileSelected }: Props) {
         onClick={openFilePicker}
         aria-label="GPX Datei auswählen"
         style={{
-          width: "76px",
-          height: "76px",
-          borderRadius: "50%",
-          border: "8px solid #E8E8E5",
-          background: "transparent",
+          position: "absolute",
+          inset: "20px",
+          borderRadius: "24px",
+	  border: "none",
+          background: "rgba(24, 116, 205, 0.25)",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          color: "#E8E8E5",
+          fontSize: "18px",
+          fontWeight: 500,
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
           padding: 0,
         }}
       >
-        <div
-          style={{
-            width: "52px",
-            height: "52px",
-            borderRadius: "50%",
-            background: "#E8E8E8",
-          }}
-        />
       </button>
     </>
   );

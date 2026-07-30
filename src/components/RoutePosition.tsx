@@ -11,11 +11,10 @@ function RoutePosition({ position }: Props) {
 
   return (
     <>
-      {/* Pulsierender Außenring */}
       <circle
         cx={position.x}
         cy={position.y}
-        r="12"
+        r="20"
         fill="none"
 	stroke="#4A90E2"
         strokeWidth="3"
@@ -36,17 +35,6 @@ function RoutePosition({ position }: Props) {
           repeatCount="indefinite"
         />
       </circle>
-
-      {/* Weißer Kern mit orangener Umrandung */}
-      <circle
-        cx={position.x}
-        cy={position.y}
-        r="7"
-        fill="#FFFFFF"
-	stroke="#4A90E2"
-        strokeWidth="4"
-        vectorEffect="non-scaling-stroke"
-      />
     </>
   );
 }

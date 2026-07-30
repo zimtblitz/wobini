@@ -9,8 +9,8 @@ interface Props {
   file: File;
 }
 
-const ACTIVE_COLOR = "#E85D2A";
-const INACTIVE_COLOR = "rgba(232,93,42,0.25)";
+const ACTIVE_COLOR = "#F89880";
+const INACTIVE_COLOR = "#F5DEB3";
 
 function GpxViewer({ file }: Props) {
   const points = useGpx(file);
@@ -124,10 +124,6 @@ function GpxViewer({ file }: Props) {
   const viewBoxHeight =
     maxY - minY + padding * 2;
 
-  const start = svgPoints[0];
-  const end =
-    svgPoints[svgPoints.length - 1];
-
   const routePoints = svgPoints
     .map(
       (p) => `${p.x},${p.y}`
@@ -162,9 +158,8 @@ function GpxViewer({ file }: Props) {
       <polyline
         points={routePoints}
         fill="none"
-        stroke={ACTIVE_COLOR}
+        stroke={INACTIVE_COLOR}
         strokeWidth="4"
-        strokeOpacity="0.25"
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
@@ -178,44 +173,6 @@ function GpxViewer({ file }: Props) {
         strokeWidth="4"
         strokeLinecap="round"
         strokeLinejoin="round"
-        vectorEffect="non-scaling-stroke"
-      />
-
-      {/* Startpunkt */}
-      <circle
-        cx={start.x}
-        cy={start.y}
-        r="6"
-        fill={
-          showRemainingRoute
-            ? INACTIVE_COLOR
-            : ACTIVE_COLOR
-        }
-        stroke={
-          showRemainingRoute
-            ? INACTIVE_COLOR
-            : ACTIVE_COLOR
-        }
-        strokeWidth="3"
-        vectorEffect="non-scaling-stroke"
-      />
-
-      {/* Zielpunkt */}
-      <circle
-        cx={end.x}
-        cy={end.y}
-        r="6"
-        fill={
-          showRemainingRoute
-            ? ACTIVE_COLOR
-            : INACTIVE_COLOR
-        }
-        stroke={
-          showRemainingRoute
-            ? ACTIVE_COLOR
-            : INACTIVE_COLOR
-        }
-        strokeWidth="3"
         vectorEffect="non-scaling-stroke"
       />
 
