@@ -1,4 +1,4 @@
-import type { GpxPoint } from "./gpx";
+import type { GpxPoint } from "../types/gpx";
 
 export function getClosestRouteIndex(
   position: GpxPoint,
@@ -9,10 +9,12 @@ export function getClosestRouteIndex(
 
   route.forEach((point, index) => {
     const dx =
-      point.lat - position.lat;
+      point.lat -
+      position.lat;
 
     const dy =
-      point.lon - position.lon;
+      point.lon -
+      position.lon;
 
     const distance =
       dx * dx + dy * dy;

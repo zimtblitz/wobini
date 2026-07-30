@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { parseGpx, simplifyPoints } from "../utils/gpx";
 import type { GpxPoint } from "../types/gpx";
-
-const SIMPLIFICATION_TOLERANCE = 0.0005;
+import { parseGpx } from "../utils/gpx";
 
 export function useGpx(file: File | null) {
-  const [points, setPoints] = useState<GpxPoint[]>([]);
+  const [points, setPoints] =
+    useState<GpxPoint[]>([]);
 
   useEffect(() => {
     if (!file) {
@@ -13,20 +12,18 @@ export function useGpx(file: File | null) {
       return;
     }
 
-    async function load() {
-      const text = await file.text();
+    const load = async () => {
+      const text =
+        await file.text();
 
-      const parsed = parseGpx(text);
+      const result =
+        parseGpx(text);
 
-      const simplified = simplifyPoints(
-        parsed,
-        SIMPLIFICATION_TOLERANCE
-      );
-
-      setPoints(simplified);
-    }
+      setPoints(result);
+    };
 
     load();
+
   }, [file]);
 
   return points;

@@ -1,4 +1,4 @@
-import type { GpxPoint, SvgPoint } from "./gpx";
+import type { GpxPoint, SvgPoint } from "../types/gpx";
 
 export function getCompletedRoute(
   gpsPosition: GpxPoint,

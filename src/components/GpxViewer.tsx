@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { useCurrentPosition } from "../hooks/useCurrentPosition";
 import { projectPoints } from "../utils/gpx";
 import { projectGpsToRoute } from "../utils/routeProjection";
-import { getCompletedRoute } from "../utils/routeProgress";
 import { useGpx } from "../hooks/useGpx";
 import RoutePosition from "./RoutePosition";
 
@@ -40,28 +39,6 @@ function GpxViewer({ file }: Props) {
       }
 
       return projectGpsToRoute(
-        {
-          lat: gpsPosition.latitude,
-          lon: gpsPosition.longitude,
-        },
-        points,
-        svgPoints
-      );
-    },
-    [
-      gpsPosition,
-      points,
-      svgPoints,
-    ]
-  );
-
-  const completedRoute = useMemo(
-    () => {
-      if (!gpsPosition) {
-        return [];
-      }
-
-      return getCompletedRoute(
         {
           lat: gpsPosition.latitude,
           lon: gpsPosition.longitude,
