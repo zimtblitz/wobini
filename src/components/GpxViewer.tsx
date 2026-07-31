@@ -1,18 +1,17 @@
 import { useMemo, useState } from "react";
 import { useCurrentPosition } from "../hooks/useCurrentPosition";
+import { useConfig } from "../hooks/useConfig";
 import { projectPoints } from "../utils/gpx";
 import { projectGpsToRoute } from "../utils/routeProjection";
 import { useGpx } from "../hooks/useGpx";
-import RoutePosition from "./RoutePosition";
 
 interface Props {
   file: File;
 }
 
-const ACTIVE_COLOR = "#F89880";
-const INACTIVE_COLOR = "#F5DEB3";
-
 function GpxViewer({ file }: Props) {
+  const config = useConfig();
+
   const points = useGpx(file);
 
   const gpsPosition = useCurrentPosition();
@@ -28,31 +27,28 @@ function GpxViewer({ file }: Props) {
     [points]
   );
 
-  const routePosition = useMemo(
-    () => {
-      if (
-        !gpsPosition ||
-        points.length === 0 ||
-        svgPoints.length === 0
-      ) {
-        return null;
-      }
+  const routePosition = useMemo(() => {
+    if (
+      !gpsPosition ||
+      points.length === 0 ||
+      svgPoints.length === 0
+    ) {
+      return null;
+    }
 
-      return projectGpsToRoute(
-        {
-          lat: gpsPosition.latitude,
-          lon: gpsPosition.longitude,
-        },
-        points,
-        svgPoints
-      );
-    },
-    [
-      gpsPosition,
+    return projectGpsToRoute(
+      {
+        lat: gpsPosition.latitude,
+        lon: gpsPosition.longitude,
+      },
       points,
-      svgPoints,
-    ]
-  );
+      svgPoints
+    );
+  }, [
+    gpsPosition,
+    points,
+    svgPoints,
+  ]);
 
   const routeIndex = useMemo(() => {
     if (!routePosition) {
@@ -125,16 +121,12 @@ function GpxViewer({ file }: Props) {
     maxY - minY + padding * 2;
 
   const routePoints = svgPoints
-    .map(
-      (p) => `${p.x},${p.y}`
-    )
+    .map((p) => `${p.x},${p.y}`)
     .join(" ");
 
   const visibleRoutePoints =
     visibleRoute
-      .map(
-        (p) => `${p.x},${p.y}`
-      )
+      .map((p) => `${p.x},${p.y}`)
       .join(" ");
 
   return (
@@ -158,8 +150,8 @@ function GpxViewer({ file }: Props) {
       <polyline
         points={routePoints}
         fill="none"
-        stroke={INACTIVE_COLOR}
-        strokeWidth="4"
+        stroke={config.inactiveColor}
+        strokeWidth={config.strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
@@ -169,16 +161,11 @@ function GpxViewer({ file }: Props) {
       <polyline
         points={visibleRoutePoints}
         fill="none"
-        stroke={ACTIVE_COLOR}
-        strokeWidth="4"
+        stroke={config.activeColor}
+        strokeWidth={config.strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
-      />
-
-      {/* aktuelle Position */}
-      <RoutePosition
-        position={routePosition}
       />
     </svg>
   );
