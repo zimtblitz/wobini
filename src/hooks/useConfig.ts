@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 import type { Config } from "../types/config";
-import routeUrl from "../assets/route.gpx?url";
 
 const DEFAULT_CONFIG: Config = {
-  gpx: routeUrl,
+  gpx: "https://raw.githubusercontent.com/zimtblitz/wobini/refs/heads/main/src/assets/route.gpx",
   activeColor: "#FF4500",
   inactiveColor: "#1E90FF",
   strokeWidth: 1,

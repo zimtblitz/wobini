@@ -1,10 +1,8 @@
 interface Props {
-  icon: string;
   message: string;
 }
 
 function MessageOverlay({
-  icon,
   message,
 }: Props) {
   return (
@@ -32,16 +30,6 @@ function MessageOverlay({
         rx="32"
         fill="rgba(70,70,70,0.85)"
       />
-
-      {/* Icon */}
-      <text
-        x="500"
-        y="480"
-        textAnchor="middle"
-        fontSize="72"
-      >
-        {icon}
-      </text>
 
       {/* Text */}
       <text

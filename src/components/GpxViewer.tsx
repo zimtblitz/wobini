@@ -101,7 +101,6 @@ function GpxViewer() {
   if (loading) {
     return (
       <MessageOverlay
-        icon="⏳"
         message="Lade Route ..."
       />
     );
@@ -110,7 +109,6 @@ function GpxViewer() {
   if (error) {
     return (
       <MessageOverlay
-        icon="⚠️"
         message={error}
       />
     );
@@ -119,7 +117,6 @@ function GpxViewer() {
   if (svgPoints.length === 0) {
     return (
       <MessageOverlay
-        icon="⚠️"
         message="Keine Route vorhanden"
       />
     );
@@ -182,10 +179,11 @@ function GpxViewer() {
       }
     >
       {/* Schatten */}
+      <g opacity={config.shadow / 100}>
       <polyline
         points={routePoints}
         fill="none"
-        stroke={`rgba(112,128,144,${config.shadow / 100})`}
+        stroke="rgb(112,128,144)"
         strokeWidth={
           config.strokeWidth * 15
         }
@@ -193,6 +191,7 @@ function GpxViewer() {
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
       />
+      </g>
 
       {/* komplette Route */}
       <polyline
