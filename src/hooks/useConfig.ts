@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import type { Config } from "../types/config";
+import routeUrl from "../assets/route.gpx?url";
 
 const DEFAULT_CONFIG: Config = {
-  gpx: null,
+  gpx: routeUrl,
   activeColor: "#D2691E",
   inactiveColor: "#D8BFD8",
   strokeWidth: 1,
@@ -46,7 +47,7 @@ export function useConfig(): Config {
       );
 
     return {
-      gpx: params.get("gpx"),
+      gpx: params.get("gpx") ?? DEFAULT_CONFIG.gpx,
       activeColor: parseColor(
         params.get("activeColor"),
         DEFAULT_CONFIG.activeColor
