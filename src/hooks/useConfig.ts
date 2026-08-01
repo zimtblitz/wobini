@@ -3,9 +3,9 @@ import type { Config } from "../types/config";
 
 const DEFAULT_CONFIG: Config = {
   gpx: null,
-  activeColor: "#F89880",
-  inactiveColor: "#F5DEB3",
-  strokeWidth: 2,
+  activeColor: "#D2691E",
+  inactiveColor: "#D8BFD8",
+  strokeWidth: 1,
 };
 
 function parseColor(

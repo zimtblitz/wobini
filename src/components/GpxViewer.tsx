@@ -181,6 +181,19 @@ function GpxViewer() {
         )
       }
     >
+      {/* Schatten */}
+      <polyline
+        points={routePoints}
+        fill="none"
+        stroke="rgba(0,0,0,0.03)"
+        strokeWidth={
+          config.strokeWidth * 5
+        }
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+      />
+
       {/* komplette Route */}
       <polyline
         points={routePoints}
