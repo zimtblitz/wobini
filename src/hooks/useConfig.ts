@@ -6,7 +6,7 @@ const DEFAULT_CONFIG: Config = {
   activeColor: "#FF4500",
   inactiveColor: "#1E90FF",
   strokeWidth: 1,
-  shadow: 20,
+  shadow: 10,
 };
 
 function parseColor(

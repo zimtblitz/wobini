@@ -25,7 +25,7 @@ export function useGpx(
       setPoints([]);
       setLoading(false);
       setError(
-        "GPX nicht angegeben"
+        "⚠️ GPX nicht angegeben"
       );
       return;
     }
@@ -40,7 +40,7 @@ export function useGpx(
           await fetch(source);
 
         if (!response.ok) {
-          throw new Error("GPX nicht gefunden");
+          throw new Error("⚠️ GPX nicht gefunden");
         }
 
         const text =
@@ -50,7 +50,7 @@ export function useGpx(
           parseGpx(text);
 
         if (result.length === 0) {
-          throw new Error("GPX fehlerhaft");
+          throw new Error("⚠️ GPX fehlerhaft");
         }
 
         setPoints(result);
@@ -62,7 +62,7 @@ export function useGpx(
 	  setError(error.message);
 	} else {
 	  setError(
-	    "Unbekannter Fehler"
+	    "⚠️ Unbekannter Fehler"
     	  );
   	}
       } finally {

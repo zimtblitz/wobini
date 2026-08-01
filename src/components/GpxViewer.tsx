@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useCurrentPosition } from "../hooks/useCurrentPosition";
 import { useConfig } from "../hooks/useConfig";
 import { projectPoints } from "../utils/gpx";
@@ -16,9 +16,6 @@ function GpxViewer() {
   } = useGpx(config.gpx);
 
   const gpsPosition = useCurrentPosition();
-
-  const [showRemainingRoute, setShowRemainingRoute] =
-    useState(false);
 
   const svgPoints = useMemo(
     () =>
@@ -86,14 +83,8 @@ function GpxViewer() {
       return [];
     }
 
-    return showRemainingRoute
-      ? svgPoints.slice(routeIndex)
-      : svgPoints.slice(
-          0,
-          routeIndex + 1
-        );
+    return svgPoints.slice(0, routeIndex + 1)
   }, [
-    showRemainingRoute,
     routeIndex,
     svgPoints,
   ]);
@@ -101,7 +92,7 @@ function GpxViewer() {
   if (loading) {
     return (
       <MessageOverlay
-        message="Lade Route ..."
+        message="⌛ Wo bin i ..."
       />
     );
   }
@@ -117,7 +108,7 @@ function GpxViewer() {
   if (svgPoints.length === 0) {
     return (
       <MessageOverlay
-        message="Keine Route vorhanden"
+        message="⚠️ Keine Route vorhanden"
       />
     );
   }
@@ -167,16 +158,6 @@ function GpxViewer() {
       width="100%"
       height="100%"
       preserveAspectRatio="xMinYMin meet"
-      onClick={() =>
-        setShowRemainingRoute(
-          (value) => !value
-        )
-      }
-      onTouchStart={() =>
-        setShowRemainingRoute(
-          (value) => !value
-        )
-      }
     >
       {/* Schatten */}
       <g opacity={config.shadow / 100}>

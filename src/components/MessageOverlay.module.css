@@ -1,0 +1,34 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  background: rgba(40, 40, 40, 0.25);
+
+  z-index: 1000;
+}
+
+.messageBox {
+  margin: 32px 0 0 32px;
+
+  min-width: 100px;
+  max-width: min(90vw, 800px);
+  padding: 20px 32px;
+
+  border-radius: 20px;
+  background: rgba(65, 105, 225, 0.9);
+
+  color: #e8e8e5;
+  text-align: left;
+
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+
+  box-sizing: border-box;
+
+  pointer-events: auto;
+}
