@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { Config } from "../types/config";
 
 const DEFAULT_CONFIG: Config = {
-  gpx: "https://raw.githubusercontent.com/zimtblitz/wobini/refs/heads/main/src/assets/route.gpx",
+  gpx: null,
   activeColor: "#FF4500",
   inactiveColor: "#1E90FF",
   strokeWidth: 1,
@@ -47,7 +47,7 @@ export function useConfig(): Config {
       );
 
     return {
-      gpx: DEFAULT_CONFIG.gpx,
+      gpx: params.get("gpx") ?? DEFAULT_CONFIG.gpx,
       activeColor: parseColor(
         params.get("activeColor"),
         DEFAULT_CONFIG.activeColor
