@@ -2,29 +2,81 @@ import { useEffect, useState } from "react";
 import type { GpxPoint } from "../types/gpx";
 import { parseGpx } from "../utils/gpx";
 
-export function useGpx(file: File | null) {
+interface UseGpxResult {
+  points: GpxPoint[];
+  loading: boolean;
+  error: string | null;
+}
+
+export function useGpx(
+  source: string | null
+): UseGpxResult {
   const [points, setPoints] =
     useState<GpxPoint[]>([]);
 
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState<string | null>(null);
+
   useEffect(() => {
-    if (!file) {
+    if (!source) {
       setPoints([]);
+      setLoading(false);
+      setError(
+        "GPX nicht angegeben"
+      );
       return;
     }
 
     const load = async () => {
-      const text =
-        await file.text();
+      setLoading(true);
+      setError(null);
+      setPoints([]);
 
-      const result =
-        parseGpx(text);
+      try {
+        const response =
+          await fetch(source);
 
-      setPoints(result);
+        if (!response.ok) {
+          throw new Error("GPX nicht gefunden");
+        }
+
+        const text =
+          await response.text();
+
+        const result =
+          parseGpx(text);
+
+        if (result.length === 0) {
+          throw new Error("GPX fehlerhaft");
+        }
+
+        setPoints(result);
+
+      } catch (error) {
+  	setPoints([]);
+
+	if (error instanceof Error) {
+	  setError(error.message);
+	} else {
+	  setError(
+	    "Unbekannter Fehler"
+    	  );
+  	}
+      } finally {
+        setLoading(false);
+      }
     };
 
     load();
 
-  }, [file]);
+  }, [source]);
 
-  return points;
+  return {
+    points,
+    loading,
+    error,
+  };
 }

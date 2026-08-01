@@ -4,15 +4,16 @@ import { useConfig } from "../hooks/useConfig";
 import { projectPoints } from "../utils/gpx";
 import { projectGpsToRoute } from "../utils/routeProjection";
 import { useGpx } from "../hooks/useGpx";
+import MessageOverlay from "./MessageOverlay";
 
-interface Props {
-  file: File;
-}
-
-function GpxViewer({ file }: Props) {
+function GpxViewer() {
   const config = useConfig();
 
-  const points = useGpx(file);
+  const {
+    points,
+    loading,
+    error,
+  } = useGpx(config.gpx);
 
   const gpsPosition = useCurrentPosition();
 
@@ -97,12 +98,40 @@ function GpxViewer({ file }: Props) {
     svgPoints,
   ]);
 
-  if (svgPoints.length === 0) {
-    return <div>Lade Route...</div>;
+  if (loading) {
+    return (
+      <MessageOverlay
+        icon="⏳"
+        message="Lade Route ..."
+      />
+    );
   }
 
-  const xs = svgPoints.map((p) => p.x);
-  const ys = svgPoints.map((p) => p.y);
+  if (error) {
+    return (
+      <MessageOverlay
+        icon="⚠️"
+        message={error}
+      />
+    );
+  }
+
+  if (svgPoints.length === 0) {
+    return (
+      <MessageOverlay
+        icon="⚠️"
+        message="Keine Route vorhanden"
+      />
+    );
+  }
+
+  const xs = svgPoints.map(
+    (p) => p.x
+  );
+
+  const ys = svgPoints.map(
+    (p) => p.y
+  );
 
   const minX = Math.min(...xs);
   const maxX = Math.max(...xs);
@@ -121,12 +150,18 @@ function GpxViewer({ file }: Props) {
     maxY - minY + padding * 2;
 
   const routePoints = svgPoints
-    .map((p) => `${p.x},${p.y}`)
+    .map(
+      (p) =>
+        `${p.x},${p.y}`
+    )
     .join(" ");
 
   const visibleRoutePoints =
     visibleRoute
-      .map((p) => `${p.x},${p.y}`)
+      .map(
+        (p) =>
+          `${p.x},${p.y}`
+      )
       .join(" ");
 
   return (

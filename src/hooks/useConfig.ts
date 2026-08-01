@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { Config } from "../types/config";
 
 const DEFAULT_CONFIG: Config = {
+  gpx: null,
   activeColor: "#F89880",
   inactiveColor: "#F5DEB3",
   strokeWidth: 2,
@@ -45,11 +46,11 @@ export function useConfig(): Config {
       );
 
     return {
+      gpx: params.get("gpx"),
       activeColor: parseColor(
         params.get("activeColor"),
         DEFAULT_CONFIG.activeColor
       ),
-
       inactiveColor: parseColor(
         params.get("inactiveColor"),
         DEFAULT_CONFIG.inactiveColor
