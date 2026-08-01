@@ -185,7 +185,7 @@ function GpxViewer() {
       <polyline
         points={routePoints}
         fill="none"
-        stroke="rgba(0,0,0,0.05)"
+        stroke={`rgba(112,128,144,${config.shadow / 100})`}
         strokeWidth={
           config.strokeWidth * 15
         }

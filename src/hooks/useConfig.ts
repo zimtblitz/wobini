@@ -4,9 +4,10 @@ import routeUrl from "../assets/route.gpx?url";
 
 const DEFAULT_CONFIG: Config = {
   gpx: routeUrl,
-  activeColor: "#1E90FF",
-  inactiveColor: "#DEB887",
+  activeColor: "#FF4500",
+  inactiveColor: "#1E90FF",
   strokeWidth: 1,
+  shadow: 20,
 };
 
 function parseColor(
@@ -59,6 +60,10 @@ export function useConfig(): Config {
       strokeWidth: parseNumber(
         params.get("strokeWidth"),
         DEFAULT_CONFIG.strokeWidth
+      ),
+      shadow: parseNumber(
+        params.get("shadow"),
+        DEFAULT_CONFIG.shadow
       ),
     };
   }, []);
