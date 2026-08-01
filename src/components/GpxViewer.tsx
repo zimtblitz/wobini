@@ -185,9 +185,9 @@ function GpxViewer() {
       <polyline
         points={routePoints}
         fill="none"
-        stroke="rgba(0,0,0,0.03)"
+        stroke="rgba(0,0,0,0.05)"
         strokeWidth={
-          config.strokeWidth * 5
+          config.strokeWidth * 15
         }
         strokeLinecap="round"
         strokeLinejoin="round"

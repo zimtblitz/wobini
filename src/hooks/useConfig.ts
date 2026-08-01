@@ -4,8 +4,8 @@ import routeUrl from "../assets/route.gpx?url";
 
 const DEFAULT_CONFIG: Config = {
   gpx: routeUrl,
-  activeColor: "#D2691E",
-  inactiveColor: "#D8BFD8",
+  activeColor: "#1E90FF",
+  inactiveColor: "#DEB887",
   strokeWidth: 1,
 };
 
@@ -47,7 +47,7 @@ export function useConfig(): Config {
       );
 
     return {
-      gpx: params.get("gpx") ?? DEFAULT_CONFIG.gpx,
+      gpx: DEFAULT_CONFIG.gpx,
       activeColor: parseColor(
         params.get("activeColor"),
         DEFAULT_CONFIG.activeColor
