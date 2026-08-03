@@ -14,21 +14,28 @@
 .messageBox {
   margin: 32px 0 0 32px;
 
-  min-width: 100px;
   max-width: min(90vw, 800px);
-  padding: 20px 32px;
+  padding: 24px 32px;
 
   border-radius: 20px;
-  background: rgba(65, 105, 225, 0.9);
+  background: rgba(220, 20, 60, 0.8);
 
   color: #e8e8e5;
-  text-align: left;
-
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.4;
+  text-align: center;
 
   box-sizing: border-box;
 
   pointer-events: auto;
+}
+
+.icon {
+  font-size: 32px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.message {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.5;
 }

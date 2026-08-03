@@ -90,11 +90,7 @@ function GpxViewer() {
   ]);
 
   if (loading) {
-    return (
-      <MessageOverlay
-        message="⌛ Wo bin i ..."
-      />
-    );
+    return null;
   }
 
   if (error) {
@@ -108,7 +104,7 @@ function GpxViewer() {
   if (svgPoints.length === 0) {
     return (
       <MessageOverlay
-        message="⚠️ Keine Route vorhanden"
+        message="Keine Route in GPX"
       />
     );
   }

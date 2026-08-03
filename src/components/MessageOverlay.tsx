@@ -8,7 +8,8 @@ function MessageOverlay({ message }: Props) {
   return (
     <div className={styles.overlay}>
       <div className={styles.messageBox}>
-        {message}
+        <div className={styles.icon}>⚠️</div>
+        <div className={styles.message}>{message}</div>
       </div>
     </div>
   );
