@@ -3,10 +3,10 @@ import type { Config } from "../types/config";
 
 const DEFAULT_CONFIG: Config = {
   gpx: null,
-  activeColor: "#FF4500",
+  activeColor: "#DFFF00",
   inactiveColor: "#1E90FF",
-  strokeWidth: 1,
-  shadow: 10,
+  strokeWidth: 2,
+  shadow: 50,
 };
 
 function parseColor(
