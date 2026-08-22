@@ -23,7 +23,7 @@ function perpendicularDistance(
   if (dx === 0 && dy === 0) {
     return Math.sqrt(
       Math.pow(point.lon - start.lon, 2) +
-      Math.pow(point.lat - start.lat, 2)
+        Math.pow(point.lat - start.lat, 2)
     );
   }
 
@@ -39,7 +39,7 @@ function perpendicularDistance(
 
   return Math.sqrt(
     Math.pow(point.lon - projection.lon, 2) +
-    Math.pow(point.lat - projection.lat, 2)
+      Math.pow(point.lat - projection.lat, 2)
   );
 }
 
@@ -106,18 +106,54 @@ export function projectPoints(
     (meanLat * Math.PI) / 180
   );
 
+  // Project longitude/latitude into a coordinate system
+  // where longitude is corrected for the latitude.
   const projected = points.map((point) => ({
     x: point.lon * latCorrection,
     y: point.lat,
   }));
 
-  const xs = projected.map((p) => p.x);
-  const ys = projected.map((p) => p.y);
+  const start = projected[0];
+  const end = projected[projected.length - 1];
+
+  // Vector from start to end.
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+
+  // Angle of the line from start to end.
+  const angle = Math.atan2(dy, dx);
+
+  // Rotate the route by the negative angle so that
+  // the line from start to end becomes horizontal.
+  const cos = Math.cos(-angle);
+  const sin = Math.sin(-angle);
+
+  const rotated = projected.map((point) => {
+    // Move the start point to the origin.
+    const x = point.x - start.x;
+    const y = point.y - start.y;
+
+    // Rotate around the start point.
+    return {
+      x: x * cos - y * sin,
+      y: x * sin + y * cos,
+    };
+  });
+
+  // If the end is west of the start, put the end on
+  // the left side of the resulting route.
+  if (points[points.length - 1].lon < points[0].lon) {
+    for (const point of rotated) {
+      point.x = -point.x;
+    }
+  }
+
+  const xs = rotated.map((p) => p.x);
+  const ys = rotated.map((p) => p.y);
 
   const minX = Math.min(...xs);
-  const minY = Math.min(...ys);
-
   const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
   const maxY = Math.max(...ys);
 
   const width = maxX - minX;
@@ -125,7 +161,7 @@ export function projectPoints(
 
   const scale = size / Math.max(width, height);
 
-  return projected.map((point) => ({
+  return rotated.map((point) => ({
     x: (point.x - minX) * scale,
     y: (maxY - point.y) * scale,
   }));
