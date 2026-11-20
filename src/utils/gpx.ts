@@ -106,10 +106,14 @@ export function projectPoints(
     (meanLat * Math.PI) / 180
   );
 
+  // If start point is east of end point then mirror the horizontal axis
+  const shouldMirror =
+  points[0].lon > points[points.length - 1].lon;
+
   // Project longitude/latitude into a coordinate system
   // where longitude is corrected for the latitude.
   const projected = points.map((point) => ({
-    x: point.lon * latCorrection,
+    x: (shouldMirror ? -1 : 1) * point.lon * latCorrection,
     y: point.lat,
   }));
 
