@@ -140,14 +140,6 @@ export function projectPoints(
     };
   });
 
-  // If the end is west of the start, put the end on
-  // the left side of the resulting route.
-  if (points[points.length - 1].lon < points[0].lon) {
-    for (const point of rotated) {
-      point.x = -point.x;
-    }
-  }
-
   const xs = rotated.map((p) => p.x);
   const ys = rotated.map((p) => p.y);
 
